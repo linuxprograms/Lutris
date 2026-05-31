@@ -1,59 +1,83 @@
-#!/usr/bin/env bash
+# Instalador de Lutris para Debian 13 (Trixie)
 
-set -e
+Script de automatización para la instalación de Lutris en Debian 13 (Trixie), incluyendo soporte para Wine de 32 y 64 bits, Vulkan, Winetricks y GameMode.
 
-GREEN='\033[0;32m'
-BLUE='\033[0;34m'
-YELLOW='\033[1;33m'
-RED='\033[0;31m'
-NC='\033[0m'
+## Descripción
 
-echo -e "${BLUE}=====================================${NC}"
-echo -e "${BLUE}     Lutris Installer for Debian     ${NC}"
-echo -e "${BLUE}=====================================${NC}"
+Este script realiza las siguientes tareas:
 
-echo -e "\n${YELLOW}[1/7] Añadiendo arquitectura i386...${NC}"
-sudo dpkg --add-architecture i386
+* Habilita la arquitectura `i386`.
+* Instala dependencias esenciales para juegos.
+* Configura el repositorio oficial de Lutris.
+* Importa y registra la clave GPG del repositorio.
+* Instala soporte Vulkan para sistemas de 32 y 64 bits.
+* Instala la versión más reciente de Lutris disponible para Debian 13.
 
-echo -e "\n${YELLOW}[2/7] Instalando dependencias...${NC}"
-sudo apt update
-sudo apt install -y 
-wget 
-curl 
-gnupg 
-wine 
-wine32 
-wine64 
-winetricks 
-gamemode
+## Requisitos
 
-echo -e "\n${YELLOW}[3/7] Creando directorio de keyrings...${NC}"
-sudo mkdir -p /etc/apt/keyrings
+* Debian GNU/Linux 13 (Trixie)
+* Conexión a Internet
+* Usuario con privilegios `sudo`
 
-echo -e "\n${YELLOW}[4/7] Importando clave de Lutris...${NC}"
-wget -qO- 
-https://download.opensuse.org/repositories/home:/strycore:/lutris/Debian_13/Release.key 
-| sudo gpg --dearmor -o /etc/apt/keyrings/lutris.gpg
+## Instalación
 
-echo -e "\n${YELLOW}[5/7] Añadiendo repositorio oficial...${NC}"
+Clonar el repositorio:
 
-cat << EOF | sudo tee /etc/apt/sources.list.d/lutris.sources > /dev/null
-Types: deb
-URIs: https://download.opensuse.org/repositories/home:/strycore:/lutris/Debian_13/
-Suites: ./
-Components:
-Signed-By: /etc/apt/keyrings/lutris.gpg
-EOF
+```bash
+git clone https://github.com/linuxprograms/lutris-installer.git
+cd lutris-installer
+```
 
-echo -e "\n${YELLOW}[6/7] Actualizando repositorios...${NC}"
-sudo apt update
+Asignar permisos de ejecución:
 
-echo -e "\n${YELLOW}[7/7] Instalando Vulkan y Lutris...${NC}"
-sudo apt install -y 
-mesa-vulkan-drivers 
-mesa-vulkan-drivers:i386 
+```bash
+chmod +x install.sh
+```
+
+Ejecutar el instalador:
+
+```bash
+./install.sh
+```
+
+## Componentes instalados
+
+| Paquete             | Descripción                                      |
+| ------------------- | ------------------------------------------------ |
+| wine                | Capa de compatibilidad para aplicaciones Windows |
+| wine32              | Soporte Wine de 32 bits                          |
+| wine64              | Soporte Wine de 64 bits                          |
+| winetricks          | Herramienta de configuración para Wine           |
+| gamemode            | Optimizaciones de rendimiento para videojuegos   |
+| mesa-vulkan-drivers | Controladores Vulkan                             |
+| lutris              | Plataforma de gestión de videojuegos             |
+
+## Verificación
+
+Comprobar la instalación:
+
+```bash
+lutris --version
+```
+
+Iniciar Lutris:
+
+```bash
 lutris
+```
 
-echo -e "\n${GREEN}✓ Instalación completada correctamente${NC}"
-echo -e "${GREEN}✓ Ejecuta: lutris${NC}"
+## Compatibilidad
 
+| Distribución           | Estado     |
+| ---------------------- | ---------- |
+| Debian 13 (Trixie)     | Soportado  |
+| Debian Testing         | Compatible |
+| Debian Stable anterior | No probado |
+
+## Licencia
+
+Este proyecto se distribuye bajo la licencia MIT.
+
+---
+
+Desarrollado para la comunidad GNU/Linux.
